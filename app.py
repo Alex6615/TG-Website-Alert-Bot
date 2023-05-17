@@ -46,8 +46,8 @@ async def rank(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply = reply + domain_rank_converted
         await context.bot.send_message(chat_id=update.effective_chat.id, text=reply, parse_mode='HTML')
     elif len(args) == 1 :
-        domain_rank = Get_Domain_Rank(size=args[0])
-        reply = f"<b>💵 Wking Top</b> <code>{args[0]}</code> <b>Domains Been Accessed During 1 Hour </b>\n"
+        domain_rank = Get_Domain_Rank(range=args[0])
+        reply = f"<b>💵 Wking Top</b> <code>5</code> <b>Domains Been Accessed During {args[0]} Hour </b>\n"
         domain_rank_converted = domain_rank_reply_converter(domain_rank)
         reply = reply + domain_rank_converted
         await context.bot.send_message(chat_id=update.effective_chat.id, text=reply, parse_mode='HTML')

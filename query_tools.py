@@ -16,7 +16,7 @@ def Get_Wking_UserCount():
     session.close()
     return user_count
 
-def Get_Domain_Rank(size=5):
+def Get_Domain_Rank(serverId="9", size=5, range=1):
     session = requests.session()
     headers = {
         'Accept' : 'application/json',
@@ -49,7 +49,7 @@ def Get_Domain_Rank(size=5):
                     "range": {
                         "timeISO8601": {
                             "format": "strict_date_optional_time",
-                            "gte": "now-1h",
+                            "gte": f"now-{str(range)}h",
                             "lte": "now"
                         }
                     }
@@ -58,7 +58,7 @@ def Get_Domain_Rank(size=5):
                     "bool": {
                         "should": {
                             "match": {
-                                "serverId": "9"
+                                "serverId": serverId
                             }
                         }
                     }
