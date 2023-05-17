@@ -1,8 +1,12 @@
-import requests
 import urllib3  
-import json
-
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+import json
+import requests
+
+from payloads import payload
+
+
 
 def Get_Wking_UserCount():
     session = requests.session()
@@ -23,57 +27,17 @@ def Get_Domain_Rank(serverId="9", size=5, range=1):
         'Content-Type' : 'application/json',
         'Authorization' : 'Bearer glsa_qOHsDNPG4z8Hr87LlXgpBzQokb91s2Xn_79ffa6a3'   
     }
-    payload = {
-        "aggs" : {
-            "0": {
-                "terms": {
-                    "field": "serverName.keyword",
-                    "order": {
-                        "_count": "desc"
-                    },
-                    "size": size
-                }
-            }
-        },
-        "size": 0,
-        "script_fields": {},
-        "stored_fields": [
-            "*"
-        ],
-        "runtime_mappings": {},
-        "query": {
-            "bool": {
-                "must": [],
-                "filter": [
-                {
-                    "range": {
-                        "timeISO8601": {
-                            "format": "strict_date_optional_time",
-                            "gte": f"now-{str(range)}h",
-                            "lte": "now"
-                        }
-                    }
-                },
-                {
-                    "bool": {
-                        "should": {
-                            "match": {
-                                "serverId": serverId
-                            }
-                        }
-                    }
-                }
-                ],
-                "should": [],
-                "must_not": []
-            }
-          }
-        }
+    # How many domains
+    payload["aggs"]["0"]["terms"]["size"] = size
+    # Time range
+    payload["query"]["bool"]["filter"][0]["range"]["timeISO8601"]["gte"] = f"now-{str(range)}h"
+    # Which Site
+    payload["query"]["bool"]["filter"][1]["bool"]["should"]["match"]["serverId"] = serverId
     response = session.get('https://elastic.owin.info/goedge-*/_search', headers = headers, data = json.dumps(payload))
     domain_rank = json.loads(response.content)['aggregations']['0']['buckets']
     session.close()
     return domain_rank
 
 if __name__ == "__main__" :
-    x = Get_Domain_Rank(10)
+    x = Get_Domain_Rank(range = 6)
     print(x)
