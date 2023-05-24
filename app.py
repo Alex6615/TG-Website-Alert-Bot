@@ -1,15 +1,28 @@
 import os 
 
 import logging
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import Updater, ApplicationBuilder, ContextTypes, CommandHandler
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    ContextTypes,
+    ConversationHandler,
+    MessageHandler,
+    filters,
+)
 
 from secret_telegram import TELEGRAM_TOKEN
+t_token = TELEGRAM_TOKEN
+
 from query_tools import *
 
+# Enable logging
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
 
-t_token = TELEGRAM_TOKEN
 
 def domain_rank_reply_converter(domain_rank):
     result = ""
@@ -22,6 +35,7 @@ def domain_rank_reply_converter(domain_rank):
             str(domain['doc_count']) + \
             '\n'
     return result
+
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="❤️ I'm a Website_alerts Bot")
@@ -67,18 +81,28 @@ async def rank10(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply = reply + domain_rank_converted
         await context.bot.send_message(chat_id=update.effective_chat.id, text=reply, parse_mode='HTML')
 
+
+
+
+
+
 if __name__ == '__main__':
+
+    """Run the bot."""
+
     start_handler = CommandHandler('start', start)
     usercount_handler = CommandHandler('usercount', usercount)
     rank5_handler = CommandHandler('rank5', rank5)
     rank10_handler = CommandHandler('rank10', rank10)
 
-    application = ApplicationBuilder().token(t_token).build()
+
+    application = Application.Builder().token(t_token).build()
     
     application.add_handler(start_handler)
     application.add_handler(usercount_handler)
     application.add_handler(rank5_handler)
     application.add_handler(rank10_handler)
+
 
     application.run_polling()
     

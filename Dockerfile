@@ -20,4 +20,4 @@ RUN rm -rf /website_alerts/build
 RUN rm -r ~/.cache/pip
 
 # Run the application
-ENTRYPOINT ["python3", "app.py"]
+ENTRYPOINT ["python3", "inlinekeyboard_app.py"]
