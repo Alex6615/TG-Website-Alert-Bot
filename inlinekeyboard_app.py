@@ -76,6 +76,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def Button_Sites(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Parses the CallbackQuery and updates the message text."""
+    global serverId
+    global rank
     query = update.callback_query
     # CallbackQueries need to be answered, even if no notification to the user is needed
     # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
@@ -117,11 +119,9 @@ async def Button_Sites(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     ]
     reply_markup_hours = InlineKeyboardMarkup(keyboard_hours)
     if query.data == "wking" :
-        global serverId
         serverId = "9"
         await query.edit_message_text(text="Selected function: ", reply_markup=reply_markup_functions)
     elif query.data == "rank5" or query.data == "rank10" :
-        global rank
         rank = query.data
         await query.edit_message_text(text=f"Selected time range: ", reply_markup=reply_markup_hours)
     elif query.data == "usercount" :
