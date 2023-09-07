@@ -2,4 +2,5 @@
 bin
 lib
 __pycache__
-
+pyvenv.cfg
+secrets/*local.py

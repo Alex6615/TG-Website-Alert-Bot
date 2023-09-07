@@ -7,7 +7,7 @@ Basic example for a bot that uses inline keyboards. For an in-depth explanation,
  https://github.com/python-telegram-bot/python-telegram-bot/wiki/InlineKeyboard-Example.
 """
 import logging
-from secret_telegram import TELEGRAM_TOKEN
+from secrets.secret_telegram import TELEGRAM_TOKEN
 t_token = TELEGRAM_TOKEN
 from telegram import __version__ as TG_VER
 
@@ -26,8 +26,6 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
 
 from query_tools import *
-
-
 
 # Enable logging
 logging.basicConfig(
@@ -56,13 +54,12 @@ def Flush_data():
     serverId = ""
     rank = ""
 
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends a message with three inline buttons attached."""
     keyboard = [
         [
             InlineKeyboardButton("wking", callback_data="wking"),
-            InlineKeyboardButton("窩不知道", callback_data="Nan"),
+            InlineKeyboardButton("Developing...", callback_data="Nan"),
         ],
         [
             InlineKeyboardButton("Done", callback_data="-1"),   
@@ -70,9 +67,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
-
     await update.message.reply_text("Please choose Site:", reply_markup=reply_markup)
-
 
 async def Button_Sites(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Parses the CallbackQuery and updates the message text."""
@@ -145,18 +140,14 @@ async def Button_Sites(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
             await query.edit_message_text(text=reply, parse_mode='HTML')
             Flush_data()
 
-
-
     # CallbackQueries need to be answered, even if no notification to the user is needed
     # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
     # await query.answer()
     # await query.edit_message_text(text=f"Selected serverId: {query.data}", reply_markup=reply_markup_functions)
 
-
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Displays info on how to use the bot."""
     await update.message.reply_text("Use /status to test this bot.")
-
 
 def main() -> None:
     """Run the bot."""

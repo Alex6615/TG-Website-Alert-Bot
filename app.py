@@ -22,8 +22,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
-
 def domain_rank_reply_converter(domain_rank):
     result = ""
     for domain in domain_rank :
@@ -35,7 +33,6 @@ def domain_rank_reply_converter(domain_rank):
             str(domain['doc_count']) + \
             '\n'
     return result
-
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="❤️ I'm a Website_alerts Bot")
@@ -65,7 +62,6 @@ async def rank5(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply = reply + domain_rank_converted
         await context.bot.send_message(chat_id=update.effective_chat.id, text=reply, parse_mode='HTML')
 
-
 async def rank10(update: Update, context: ContextTypes.DEFAULT_TYPE):
     args = context.args
     if len(args) == 0 :
@@ -81,11 +77,6 @@ async def rank10(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply = reply + domain_rank_converted
         await context.bot.send_message(chat_id=update.effective_chat.id, text=reply, parse_mode='HTML')
 
-
-
-
-
-
 if __name__ == '__main__':
 
     """Run the bot."""
@@ -95,14 +86,12 @@ if __name__ == '__main__':
     rank5_handler = CommandHandler('rank5', rank5)
     rank10_handler = CommandHandler('rank10', rank10)
 
-
     application = Application.Builder().token(t_token).build()
     
     application.add_handler(start_handler)
     application.add_handler(usercount_handler)
     application.add_handler(rank5_handler)
     application.add_handler(rank10_handler)
-
 
     application.run_polling()
     
