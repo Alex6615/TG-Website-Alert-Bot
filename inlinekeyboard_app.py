@@ -7,7 +7,8 @@ Basic example for a bot that uses inline keyboards. For an in-depth explanation,
  https://github.com/python-telegram-bot/python-telegram-bot/wiki/InlineKeyboard-Example.
 """
 import logging
-from secrets.secret_telegram import TELEGRAM_TOKEN
+from secret_telegram import TELEGRAM_TOKEN
+from secret_account import allow_groups
 t_token = TELEGRAM_TOKEN
 from telegram import __version__ as TG_VER
 
@@ -55,6 +56,9 @@ def Flush_data():
     rank = ""
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if update.message.chat.id not in allow_groups :
+        print(f"Group {update.message.chat.id} not allow !")
+        return
     """Sends a message with three inline buttons attached."""
     keyboard = [
         [
