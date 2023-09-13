@@ -12,6 +12,7 @@ from telegram.ext import (
 )
 
 from secret_telegram import TELEGRAM_TOKEN
+from secret_account import allow_groups
 t_token = TELEGRAM_TOKEN
 
 from query_tools import *
@@ -35,9 +36,15 @@ def domain_rank_reply_converter(domain_rank):
     return result
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.chat.id not in allow_groups :
+        print(f"Group {update.message.chat.id} not allow !")
+        return
     await context.bot.send_message(chat_id=update.effective_chat.id, text="❤️ I'm a Website_alerts Bot")
 
 async def usercount(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.chat.id not in allow_groups :
+        print(f"Group {update.message.chat.id} not allow !")
+        return
     args = context.args
     if len(args) == 0 :
         count = Get_Wking_UserCount()
@@ -48,6 +55,9 @@ async def usercount(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=update.effective_chat.id, text="no site avaliable now", parse_mode='HTML')
 
 async def rank5(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.chat.id not in allow_groups :
+        print(f"Group {update.message.chat.id} not allow !")
+        return
     args = context.args
     if len(args) == 0 :
         domain_rank = Get_Domain_Rank()
@@ -63,6 +73,9 @@ async def rank5(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=update.effective_chat.id, text=reply, parse_mode='HTML')
 
 async def rank10(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.chat.id not in allow_groups :
+        print(f"Group {update.message.chat.id} not allow !")
+        return
     args = context.args
     if len(args) == 0 :
         domain_rank = Get_Domain_Rank(size=10)
