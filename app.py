@@ -41,6 +41,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     await context.bot.send_message(chat_id=update.effective_chat.id, text="❤️ I'm a Website_alerts Bot")
 
+async def getinfo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.message.chat.id not in allow_groups :
+        print(f"Group {update.message.chat.id} not allow !")
+        return
+    chatId = update.message.chat.id
+    userFirstName = update.message.from_user.first_name
+    userLastName = update.message.from_user.last_name
+    username = update.message.from_user.username
+    userId = update.message.from_user.id
+    reply_text = f"CHAT ID : {chatId}\n User : {username}\nUser ID : {userId}"
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=reply_text)
+
 async def usercount(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message.chat.id not in allow_groups :
         print(f"Group {update.message.chat.id} not allow !")
@@ -95,13 +107,15 @@ if __name__ == '__main__':
     """Run the bot."""
 
     start_handler = CommandHandler('start', start)
+    getinfo_handler = CommandHandler('getinfo', getinfo)
     usercount_handler = CommandHandler('usercount', usercount)
     rank5_handler = CommandHandler('rank5', rank5)
     rank10_handler = CommandHandler('rank10', rank10)
 
-    application = Application.Builder().token(t_token).build()
+    application = Application.builder().token(t_token).build()
     
     application.add_handler(start_handler)
+    application.add_handler(getinfo_handler)
     application.add_handler(usercount_handler)
     application.add_handler(rank5_handler)
     application.add_handler(rank10_handler)
